@@ -1,0 +1,1 @@
+<add name="CustomerConnection" providerName="System.Data.SqlClient" connectionString="Data Source=Mewan-Indula;Initial Catalog=Customer;Integrated Security=True;" />

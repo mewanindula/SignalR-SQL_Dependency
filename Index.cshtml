@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Customer";
+}
+
+<h2>Customer Details</h2>
+
+@Html.Hidden("Get", Url.Action("Get", "Customer"))
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Customer Id</th>
+            <th>Customer Name</th>
+        </tr>
+    </thead>
+
+    <tbody id="tblInfo">
+        
+    </tbody>
+</table>

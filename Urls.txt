@@ -1,0 +1,3 @@
+https://techbrij.com/database-change-notifications-asp-net-signalr-sqldependency
+
+https://stackoverflow.com/questions/7588572/what-are-the-limitations-of-sqldependency

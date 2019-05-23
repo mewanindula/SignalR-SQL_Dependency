@@ -1,0 +1,76 @@
+//Hub
+public void ShowDownloadAttendanceLogProgress(string progressCount, string totalRecord, string downloadedRecord, int readerId, string clientId, bool completed)
+        {
+            try
+            {
+                IHubContext context = GlobalHost.ConnectionManager.GetHubContext<Attendance_Process_Hub>();
+                context.Clients.Client(clientId).displayDownloadAttendanceLogProgress(progressCount,totalRecord,downloadedRecord,readerId,completed);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+//Hub Call
+hub.ShowDownloadAttendanceLogProgress(Math.Round(sum, 2).ToString(), totalRecord.ToString(), downloadedRecord.ToString(), ReaderId, clientId, completed);
+
+//JS
+var connectionID;
+
+$(function () {
+
+    // Proxy created on the fly
+    var progress = $.connection.attendance_Process_Hub;
+
+    //// Declare a function on the job hub so the server can invoke it
+    progress.client.displayDownloadAttendanceLogProgress = function (progressCount, totalRecord, downloadedRecord, readerId, completed) {
+        console.log(progressCount);
+
+        loadProgressBar(progressCount);
+
+        updateTable(totalRecord, downloadedRecord, readerId);
+
+        if (completed)
+        {
+            swal({
+                type: 'success',
+                title: 'All Attendance Log Data Is Downloaded',
+                showConfirmButton: false,
+                timer: 2500
+            })
+
+
+            //swal("All Attendance Log Data Is Downloaded");
+        }
+    }
+
+
+    //// Declare a function on the job hub so the server can invoke it
+    progress.client.displayReaderStatus = function (msg, color) {
+        console.log(msg);
+
+        $("#readerStatus").html('');
+        $("#readerStatus").html(msg);
+        $('#readerStatus').css('color', color);
+        $('#readerStatus').css("font-size", "18px !important");
+    }
+
+
+    // Start the connection
+    $.connection.hub.start()
+    .done(function () {
+        connectionID = $.connection.hub.id;
+        //$.connection.attendance_Process_Hub.server.displayDownloadAttendanceLogProgress = function (progressCount, totalRecord, downloadedRecord, readerId) { };
+        $.connection.attendance_Process_Hub.server.displayDownloadAttendanceLogProgress = function (progressCount, totalRecord, downloadedRecord, readerId, completed) { };
+
+        $.connection.attendance_Process_Hub.server.displayReaderStatus = function (msg, color) { };
+    })
+    .fail(function () {
+        console.log("Error");
+    });
+
+    loadProgressBar("0");
+
+});
